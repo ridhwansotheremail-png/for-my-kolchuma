@@ -310,16 +310,18 @@ function EventCard({ev,i,onHalal}){
 }
 
 // ── MEDIA CARD ──
-function MediaCard({item,dark}){
+// ── MEDIA CARD WITH RATINGS ──
+function MediaCard({item,dark,ratings}){
   const[open,setOpen]=useState(false);const[err,setErr]=useState(false);
   const bg=dark?"#1e1520":"#161616";
   const gk=Object.keys(IMG).find(k=>IMG[k]===item.img);
   const grad=gk?`linear-gradient(135deg,${GRAD[gk]})`:`linear-gradient(135deg,${bg},#333)`;
+  const r=ratings?.[item.t]||ratings?.[item.t.replace(/ S\d+$/,"")]||null;
   return(
-    <div onClick={()=>setOpen(!open)} style={{flex:`0 0 ${dark?170:200}px`,scrollSnapAlign:"start",background:bg,borderRadius:14,overflow:"hidden",border:`1px solid ${dark?"rgba(255,255,255,.08)":"rgba(255,255,255,.06)"}`,cursor:"pointer",transition:"transform .2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="none"}>
+    <div onClick={()=>setOpen(!open)} style={{flex:`0 0 ${dark?175:205}px`,scrollSnapAlign:"start",background:bg,borderRadius:14,overflow:"hidden",border:`1px solid ${dark?"rgba(255,255,255,.08)":"rgba(255,255,255,.06)"}`,cursor:"pointer",transition:"transform .2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="none"}>
       {item.img&&!err
-        ?<img src={item.img} alt={item.t} crossOrigin="anonymous" referrerPolicy="no-referrer" onError={()=>setErr(true)} loading="lazy" style={{width:"100%",height:dark?210:250,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-        :<div style={{width:"100%",height:dark?210:250,background:grad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:18,textAlign:"center",position:"relative",overflow:"hidden"}}>
+        ?<img src={item.img} alt={item.t} crossOrigin="anonymous" referrerPolicy="no-referrer" onError={()=>setErr(true)} loading="lazy" style={{width:"100%",height:dark?215:255,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+        :<div style={{width:"100%",height:dark?215:255,background:grad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:18,textAlign:"center",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",inset:0,background:"radial-gradient(circle at 30% 40%,rgba(255,255,255,.08),transparent 60%)"}}/>
           {item.p&&<span style={{fontSize:9,color:item.c||"#888",fontWeight:700,textTransform:"uppercase",marginBottom:8,letterSpacing:1.5,position:"relative"}}>{item.p}</span>}
           <span style={{fontFamily:"var(--hf)",fontSize:dark?18:20,fontWeight:600,color:"#fff",lineHeight:1.2,position:"relative"}}>{item.t}</span>
@@ -328,15 +330,78 @@ function MediaCard({item,dark}){
         {item.p&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:9,color:item.c||"#888",fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>{item.p}</span>{item.y&&<span style={{fontSize:9,color:"#555"}}>{item.y}</span>}</div>}
         {item.r&&<span style={{fontSize:10,color:dark?"#E8A87C":"#888",fontWeight:600,display:"block",marginBottom:4}}>{item.r} · {item.g}</span>}
         <h3 style={{fontSize:dark?13.5:14.5,fontWeight:600,marginBottom:4,color:dark?"#F0E8E0":"#F0F0F0"}}>{item.t}</h3>
+        {r&&<div style={{display:"flex",gap:5,marginBottom:6,flexWrap:"wrap"}}>
+          {r.imdb&&<span style={{fontSize:9,background:"rgba(245,197,24,.15)",color:"#F5C518",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>⭐ {r.imdb}</span>}
+          {r.rt&&<span style={{fontSize:9,background:"rgba(250,50,50,.12)",color:"#FA3232",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>🍅 {r.rt}</span>}
+          {r.mc&&<span style={{fontSize:9,background:parseInt(r.mc)>=60?"rgba(102,204,0,.12)":"rgba(255,199,0,.12)",color:parseInt(r.mc)>=60?"#66CC00":"#FFC700",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>MC {r.mc}</span>}
+        </div>}
+        {!item.r&&item.g&&<span style={{display:"inline-block",fontSize:9,color:"#666",background:"rgba(255,255,255,.05)",padding:"2px 8px",borderRadius:3,marginBottom:5}}>{item.g}</span>}
         <p style={{fontSize:11.5,color:dark?"#AA9090":"#AAA",lineHeight:1.45,...(open?{}:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"})}}>{item.d}</p>
       </div>
     </div>
   );
 }
 
-// ── SECTIONS ──
-function StreamingSection(){const r=useRef(null);return(<section style={{marginBottom:32}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h2 className="sec-h">📺 Streaming Now</h2><div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>r.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div></div><div ref={r} className="scroll-row">{SHOWS.map(s=><MediaCard key={s.id} item={s} dark/>)}</div></section>);}
-function CinemaSection(){const r=useRef(null);return(<section style={{marginBottom:32}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h2 className="sec-h">🎬 In Cinemas</h2><div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>r.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div></div><div ref={r} className="scroll-row">{CINEMA.map(c=><MediaCard key={c.id} item={c}/>)}</div></section>);}
+// ── WHAT TO WATCH (auto-fetches ratings on mount) ──
+function WhatToWatchSection(){
+  const[ratings,setRatings]=useState(null);
+  const[loading,setLoading]=useState(true);
+  const sRef=useRef(null);const cRef=useRef(null);
+
+  useEffect(()=>{
+    let x=false;
+    (async()=>{
+      try{
+        const titles=[...SHOWS.map(s=>s.t),...CINEMA.map(c=>c.t)];
+        const r=await fetch("https://api.anthropic.com/v1/messages",{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            model:"claude-sonnet-4-20250514",max_tokens:2000,
+            tools:[{type:"web_search_20250305",name:"web_search"}],
+            messages:[{role:"user",content:"Look up ratings for these TV shows and movies from IMDb, Rotten Tomatoes and Metacritic. Search for each title.\n\nTitles:\n"+titles.join("\n")+'\n\nReturn ONLY a JSON object. Keys = exact title names. Values = {"imdb":"7.8/10","rt":"85%","mc":"72"}. Use null for scores not found.\n\nReturn valid JSON only. No markdown fences. No text before or after.'}]
+          })
+        });
+        if(x)return;
+        const data=await r.json();
+        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
+        let parsed=null;
+        for(const txt of textBlocks){
+          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
+          const objMatch=clean.match(/\{[\s\S]*\}/);
+          if(objMatch){try{const obj=JSON.parse(objMatch[0]);if(typeof obj==="object"&&!Array.isArray(obj)){parsed=obj;break;}}catch(e){}}
+          try{const obj=JSON.parse(clean);if(typeof obj==="object"&&!Array.isArray(obj)){parsed=obj;break;}}catch(e){}
+        }
+        if(!x&&parsed)setRatings(parsed);
+      }catch(e){}
+      if(!x)setLoading(false);
+    })();
+    return()=>{x=true;};
+  },[]);
+
+  return(
+    <div style={{animation:"fu .4s ease"}}>
+      {loading&&<div style={{textAlign:"center",padding:"12px 0 20px",fontSize:12,color:"var(--t3)"}}>
+        <span style={{display:"inline-block",animation:"fu .5s ease infinite alternate",marginRight:6}}>⭐</span>
+        Fetching ratings from IMDb, Rotten Tomatoes & Metacritic...
+      </div>}
+      <section style={{marginBottom:32}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+          <h2 className="sec-h">📺 Streaming Now</h2>
+          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>sRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
+        </div>
+        <div ref={sRef} className="scroll-row">{SHOWS.map(s=><MediaCard key={s.id} item={s} dark ratings={ratings}/>)}</div>
+      </section>
+      <section style={{marginBottom:32}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+          <h2 className="sec-h">🎬 In Cinemas</h2>
+          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>cRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
+        </div>
+        <div ref={cRef} className="scroll-row">{CINEMA.map(c=><MediaCard key={c.id} item={c} ratings={ratings}/>)}</div>
+      </section>
+      {ratings&&<p style={{fontSize:10,color:"var(--t3)",textAlign:"center",marginTop:-12}}>Ratings from IMDb · Rotten Tomatoes · Metacritic</p>}
+    </div>
+  );
+}
 function SourcesSection(){return(<section><h2 className="sec-h" style={{marginBottom:14}}>🔗 Community Sources</h2><p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>Discover more events directly from these verified platforms — bookmark them for fresh listings throughout the year.</p><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:10}}>{SOURCES.map((s,i)=>(<a key={i} href={s.u} target="_blank" rel="noopener noreferrer" className="src-card"><div style={{display:"flex",gap:10,alignItems:"center"}}><span style={{fontSize:20,flexShrink:0}}>{s.icon}</span><div><div style={{fontSize:13,fontWeight:600,color:"var(--t1)",marginBottom:2}}>{s.n}</div><div style={{fontSize:11,color:"var(--t3)",lineHeight:1.4}}>{s.d}</div></div></div></a>))}</div></section>);}
 
 // ── DISCOVER MORE (AI) ──
@@ -365,9 +430,235 @@ function DiscoverMore(){
   );
 }
 
-// ═══════════════════════════════════════
+// ── HOLIDAYS SECTION ──
+const HALAL_TRAVEL = [
+  {n:"Enjoy Escapes",u:"https://www.enjoyescapes.com/",d:"Holiday deals from £99pp. £0 deposit options.",icon:"✈️"},
+  {n:"HalalBooking",u:"https://halalbooking.com/en",d:"Halal-certified resorts, ladies-only pools, alcohol-free",icon:"🕌"},
+  {n:"Rooh Travel",u:"https://roohtravel.com/",d:"Muslim-friendly luxury travel, personally reviewed",icon:"🌿"},
+  {n:"Halal Escapes",u:"https://www.halalescapes.com/",d:"Bespoke halal holiday packages, flights included",icon:"🌴"},
+  {n:"HalalTrip",u:"https://www.halaltrip.com",d:"City guides, mosque finder, halal food worldwide",icon:"🗺️"},
+  {n:"Muslims Holy Travel",u:"https://www.muslimsholytravel.co.uk/halal-holidays/",d:"All-inclusive halal packages from UK",icon:"☪️"},
+];
+// Country flag lookup
+const FLAGS={"turkey":"🇹🇷","morocco":"🇲🇦","egypt":"🇪🇬","spain":"🇪🇸","greece":"🇬🇷","portugal":"🇵🇹","lanzarote":"🇮🇨","canary":"🇮🇨","scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","uk":"🇬🇧","maldives":"🇲🇻","dubai":"🇦🇪","tunisia":"🇹🇳","croatia":"🇭🇷","italy":"🇮🇹","france":"🇫🇷","mexico":"🇲🇽","caribbean":"🌴","cyprus":"🇨🇾","malta":"🇲🇹","bali":"🇮🇩","malaysia":"🇲🇾","thailand":"🇹🇭"};
+const getFlag=(t)=>{const l=(t||"").toLowerCase();for(const[k,v]of Object.entries(FLAGS))if(l.includes(k))return v;return "🌍";};
+// Gradient backgrounds for deal cards
+const DEAL_GRADS=["linear-gradient(135deg,#0D4F46,#1A7A6D)","linear-gradient(135deg,#2D1B4E,#5B3A8A)","linear-gradient(135deg,#8B4513,#D2691E)","linear-gradient(135deg,#1a1a2e,#16213e)","linear-gradient(135deg,#0a3200,#1e7200)","linear-gradient(135deg,#6B3A00,#C48A2D)","linear-gradient(135deg,#1B2838,#3A5670)","linear-gradient(135deg,#8B0000,#CD5C5C)","linear-gradient(135deg,#2F4F4F,#5F9EA0)","linear-gradient(135deg,#4A0E4E,#8E3A8E)","linear-gradient(135deg,#1C3D5A,#4682B4)","linear-gradient(135deg,#556B2F,#8FBC8F)"];
+
+function HolidaysSection(){
+  const[deals,setDeals]=useState(null);
+  const[loading,setLoading]=useState(true);
+  const[error,setError]=useState(null);
+  const ref=useRef(null);
+
+  // Auto-fetch on mount
+  useEffect(()=>{
+    let x=false;
+    (async()=>{
+      try{
+        const r=await fetch("https://api.anthropic.com/v1/messages",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            model:"claude-sonnet-4-20250514",
+            max_tokens:2000,
+            tools:[{type:"web_search_20250305",name:"web_search"}],
+            messages:[{role:"user",content:`Go to enjoyescapes.com and find ALL current holiday deals displayed on their homepage. For each deal extract:
+- title: the exact deal headline
+- destination: country/region
+- price: exact price shown (e.g. "from £184pp")
+- nights: duration (e.g. "7 nights", "4 nights")
+- type: board type (e.g. "All Inclusive", "Self-Catering", "Hotel + Flight")
+- deposit: deposit amount if shown
+- url: the booking link URL
+- badge: any badge like "Featured", "New Deal", "Hot Deal"
+- imageUrl: the image URL if visible
+
+Return ONLY a JSON array with ALL deals found. Example format:
+[{"title":"5* All inclusive Turkey","destination":"Turkey","price":"from £184pp","nights":"4 nights","type":"All Inclusive","deposit":"£19 deposit","url":"https://...","badge":"Featured","imageUrl":"https://..."}]
+
+Return valid JSON only. No markdown fences. No explanatory text before or after the JSON.`}]
+          })
+        });
+        if(x) return;
+        const data=await r.json();
+
+        // Robust parsing — try multiple extraction strategies
+        let parsed=null;
+
+        // Strategy 1: Find text blocks and try to parse JSON
+        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
+        for(const txt of textBlocks){
+          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
+          // Try to find JSON array in the text
+          const arrMatch=clean.match(/\[[\s\S]*\]/);
+          if(arrMatch){
+            try{
+              const arr=JSON.parse(arrMatch[0]);
+              if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}
+            }catch(e){/* try next */}
+          }
+          // Try direct parse
+          try{
+            const arr=JSON.parse(clean);
+            if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}
+          }catch(e){/* try next */}
+        }
+
+        // Strategy 2: If no text blocks had JSON, try tool result blocks
+        if(!parsed){
+          const toolResults=(data.content||[]).filter(b=>b.type==="mcp_tool_result"||b.type==="tool_result");
+          for(const tr of toolResults){
+            const txt=tr.content?.[0]?.text||"";
+            const arrMatch=txt.match(/\[[\s\S]*\]/);
+            if(arrMatch){
+              try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}
+            }
+          }
+        }
+
+        // Strategy 3: Concatenate all text and try one big parse
+        if(!parsed){
+          const allText=(data.content||[]).map(b=>b.text||"").join("\n");
+          const arrMatch=allText.match(/\[[\s\S]*?\](?=\s*$|\s*\n)/);
+          if(arrMatch){
+            try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr))parsed=arr;}catch(e){}
+          }
+        }
+
+        if(!x){
+          if(parsed&&parsed.length>0){
+            // Normalize each deal
+            const normalized=parsed.map((d,i)=>({
+              id:"hd"+i,
+              title:d.title||d.name||"Holiday Deal",
+              destination:d.destination||d.country||"",
+              price:d.price||d.cost||"See website",
+              nights:d.nights||d.duration||"",
+              type:d.type||d.boardType||d.board||"",
+              deposit:d.deposit||"",
+              url:d.url||d.link||d.bookingUrl||"https://www.enjoyescapes.com/",
+              badge:d.badge||d.tag||"",
+              imageUrl:d.imageUrl||d.image||d.img||null,
+            }));
+            setDeals(normalized);
+          } else {
+            setError("No deals found — visit EnjoyEscapes directly");
+            setDeals([]);
+          }
+        }
+      }catch(e){
+        if(!x) setError("Couldn't load deals — check your connection");
+      }
+      if(!x) setLoading(false);
+    })();
+    return()=>{x=true;};
+  },[]);
+
+  const refresh=useCallback(()=>{
+    setDeals(null);setLoading(true);setError(null);
+    // Re-trigger by remounting (quick hack: set deals to null triggers the skeleton)
+    // Actually just re-run the fetch
+    (async()=>{
+      try{
+        const r=await fetch("https://api.anthropic.com/v1/messages",{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,tools:[{type:"web_search_20250305",name:"web_search"}],
+            messages:[{role:"user",content:'Search enjoyescapes.com for ALL current holiday deals on their homepage right now. Extract every deal with: title, destination, price, nights, type, deposit, url, badge, imageUrl. Return ONLY a valid JSON array. No markdown. No text before or after.'}]})
+        });
+        const data=await r.json();
+        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
+        let parsed=null;
+        for(const txt of textBlocks){
+          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
+          const arrMatch=clean.match(/\[[\s\S]*\]/);
+          if(arrMatch){try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}}
+          try{const arr=JSON.parse(clean);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}
+        }
+        if(parsed){setDeals(parsed.map((d,i)=>({id:"hd"+i,title:d.title||"Deal",destination:d.destination||"",price:d.price||"See site",nights:d.nights||"",type:d.type||"",deposit:d.deposit||"",url:d.url||"https://www.enjoyescapes.com/",badge:d.badge||"",imageUrl:d.imageUrl||null})));}
+        else{setError("Couldn't parse deals");setDeals([]);}
+      }catch(e){setError("Search failed");}
+      setLoading(false);
+    })();
+  },[]);
+
+  // Skeleton loading cards
+  const Skeleton=()=>(
+    <div className="scroll-row">
+      {[0,1,2,3,4].map(i=>(
+        <div key={i} className="holiday-card" style={{flex:"0 0 280px",minHeight:200}}>
+          <div style={{height:120,borderRadius:12,background:"linear-gradient(90deg,#f0ede8 25%,#e6e2da 50%,#f0ede8 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s infinite",marginBottom:12}}/>
+          <div style={{height:14,width:"80%",borderRadius:4,background:"#f0ede8",marginBottom:8}}/>
+          <div style={{height:12,width:"50%",borderRadius:4,background:"#f0ede8",marginBottom:8}}/>
+          <div style={{height:20,width:"40%",borderRadius:4,background:"#f0ede8"}}/>
+        </div>
+      ))}
+    </div>
+  );
+
+  return(
+    <div style={{animation:"fu .4s ease"}}>
+      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
+
+      <section style={{marginBottom:32}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+          <h2 className="sec-h">✈️ Live Holiday Deals</h2>
+          <div style={{display:"flex",gap:8,alignItems:"center"}}>
+            {!loading&&<button onClick={refresh} style={{fontSize:11,color:"var(--accent)",background:"none",border:"1px solid var(--accent)",borderRadius:8,padding:"5px 12px",cursor:"pointer",fontFamily:"var(--bf)",fontWeight:600,transition:"all .15s"}}>↻ Refresh</button>}
+            <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>ref.current?.scrollBy({left:x*300,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
+          </div>
+        </div>
+        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>
+          Pulled live from <a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{color:"var(--accent)",fontWeight:600,textDecoration:"none"}}>EnjoyEscapes.com</a> · Book with as low as £0 deposit · Prices per person
+        </p>
+
+        {loading && <Skeleton/>}
+        {error && <div style={{textAlign:"center",padding:"24px",background:"var(--sf)",borderRadius:14,border:"1px solid var(--bdr)"}}><p style={{fontSize:13,color:"var(--t2)"}}>{error}</p><a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{fontSize:12,color:"var(--accent)",fontWeight:600,textDecoration:"none",display:"inline-block",marginTop:8}}>Browse EnjoyEscapes directly →</a></div>}
+
+        {deals&&deals.length>0&&(
+          <div ref={ref} className="scroll-row">
+            {deals.map((d,i)=>(
+              <a key={d.id} href={d.url} target="_blank" rel="noopener noreferrer" className="holiday-card" style={{flex:"0 0 280px",overflow:"hidden",padding:0}}>
+                {/* Image or gradient header */}
+                <div style={{height:140,background:d.imageUrl?`url(${d.imageUrl}) center/cover no-repeat`:DEAL_GRADS[i%DEAL_GRADS.length],position:"relative",display:"flex",alignItems:"flex-end",padding:14}}>
+                  {d.imageUrl&&<div style={{position:"absolute",inset:0,background:"linear-gradient(transparent 40%,rgba(0,0,0,.6))"}}/>}
+                  {!d.imageUrl&&<div style={{position:"absolute",top:12,right:14,fontSize:32}}>{getFlag(d.title+d.destination)}</div>}
+                  <div style={{position:"relative",zIndex:1,display:"flex",gap:5,flexWrap:"wrap"}}>
+                    {d.badge&&<span style={{fontSize:9.5,background:"rgba(255,255,255,.9)",color:"#0D4F46",padding:"3px 8px",borderRadius:5,fontWeight:700}}>{d.badge}</span>}
+                    {d.type&&<span style={{fontSize:9.5,background:"rgba(255,255,255,.2)",color:"#fff",padding:"3px 8px",borderRadius:5,fontWeight:600,backdropFilter:"blur(4px)"}}>{d.type}</span>}
+                  </div>
+                </div>
+                {/* Content */}
+                <div style={{padding:"14px 16px 16px"}}>
+                  <h3 style={{fontFamily:"var(--hf)",fontSize:16,fontWeight:600,lineHeight:1.3,marginBottom:8,color:"var(--t1)"}}>{d.title}</h3>
+                  <div style={{display:"flex",gap:5,marginBottom:10,flexWrap:"wrap"}}>
+                    {d.nights&&<span className="chip" style={{background:"rgba(196,138,45,.1)",color:"var(--gold)"}}>{d.nights}</span>}
+                    {d.destination&&<span className="chip">{d.destination}</span>}
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                    <span style={{fontSize:19,fontWeight:700,color:"var(--accent)",letterSpacing:-.3}}>{d.price}</span>
+                    {d.deposit&&<span style={{fontSize:10,color:"var(--t3)",fontWeight:500}}>{d.deposit}</span>}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Halal travel sources */}
+      <section>
+        <h2 className="sec-h" style={{marginBottom:14}}>🕌 Halal Travel Sources</h2>
+        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>Muslim-friendly booking platforms — halal food, prayer facilities, ladies-only pools, alcohol-free.</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:10}}>{HALAL_TRAVEL.map((s,i)=>(<a key={i} href={s.u} target="_blank" rel="noopener noreferrer" className="src-card"><div style={{display:"flex",gap:10,alignItems:"center"}}><span style={{fontSize:20,flexShrink:0}}>{s.icon}</span><div><div style={{fontSize:13,fontWeight:600,color:"var(--t1)",marginBottom:2}}>{s.n}</div><div style={{fontSize:11,color:"var(--t3)",lineHeight:1.4}}>{s.d}</div></div></div></a>))}</div>
+      </section>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════= 
 // ── MAIN APP ──
-// ═══════════════════════════════════════
+// ══════════════════════════════════════=
 function App(){
   const[tab,setTab]=useState(0);
   const[wi,setWi]=useState(0);
@@ -379,7 +670,7 @@ function App(){
   const[childOnly,setChildOnly]=useState(false);
   const[viewMode,setViewMode]=useState("list");
   const[halalEvent,setHalalEvent]=useState(null);
-  const[sortBy,setSortBy]=useState("date"); // "date" or "distance"
+  const[sortBy,setSortBy]=useState("distance"); // "date" or "distance" — default nearest first
   const weeks=useMemo(getWeeks,[]);
 
   const filtered=useMemo(()=>{
@@ -487,6 +778,11 @@ function App(){
         /* Footer */
         .footer{margin-top:48px;padding:24px 0;border-top:1px solid var(--bdr);text-align:center;}
         .footer p{font-size:11.5px;color:var(--t3);line-height:1.7;}
+        .footer .credit{font-size:12px;color:var(--gold);margin-top:8px;font-style:italic;display:block;}
+
+        /* Holiday cards */
+        .holiday-card{flex:0 0 240px;scroll-snap-align:start;background:#fff;border-radius:16px;padding:22px;text-decoration:none;color:var(--t1);border:1px solid var(--bdr);transition:all .25s;display:block;}
+        .holiday-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:var(--accent);}
 
         /* Responsive */
         @media(max-width:600px){
@@ -509,7 +805,7 @@ function App(){
 
       {/* ── TABS ── */}
       <div className="tab-row">
-        {["Events & Activities","What to Watch"].map((t,i)=>(
+        {["Events & Activities","Holidays","What to Watch"].map((t,i)=>(
           <button key={i} onClick={()=>setTab(i)} className={`tab-btn ${tab===i?"on":""}`}>{t}</button>
         ))}
       </div>
@@ -570,11 +866,10 @@ function App(){
           <DiscoverMore/>
           <div style={{marginTop:32}}><SourcesSection/></div>
         </>
+      ):tab===1?(
+        <HolidaysSection/>
       ):(
-        <>
-          <StreamingSection/>
-          <CinemaSection/>
-        </>
+        <WhatToWatchSection/>
       )}
 
       {/* Footer */}
@@ -582,7 +877,8 @@ function App(){
         <p>
           For My Kolchuma · Curated for Muslim families in East London<br/>
           All links verified · No alcohol · No nightlife · 60+ events<br/>
-          <span style={{fontSize:10,opacity:.6}}>Sources: Eventbrite · Londonist · TimeOut · Visit London · RTP · Meetup · AllEvents · London City Hall · Five Pillar Events · Halal Tourism Britain · Citizen Femme · British Muslim Magazine</span>
+          <span style={{fontSize:10,opacity:.6}}>Sources: Eventbrite · Londonist · TimeOut · Visit London · RTP · Meetup · AllEvents · London City Hall · Five Pillar Events · EnjoyEscapes · HalalBooking</span>
+          <span className="credit">Made by Ridhwan, with love ♥</span>
         </p>
       </footer>
 
