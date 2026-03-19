@@ -446,210 +446,78 @@ const getFlag=(t)=>{const l=(t||"").toLowerCase();for(const[k,v]of Object.entrie
 const DEAL_GRADS=["linear-gradient(135deg,#0D4F46,#1A7A6D)","linear-gradient(135deg,#2D1B4E,#5B3A8A)","linear-gradient(135deg,#8B4513,#D2691E)","linear-gradient(135deg,#1a1a2e,#16213e)","linear-gradient(135deg,#0a3200,#1e7200)","linear-gradient(135deg,#6B3A00,#C48A2D)","linear-gradient(135deg,#1B2838,#3A5670)","linear-gradient(135deg,#8B0000,#CD5C5C)","linear-gradient(135deg,#2F4F4F,#5F9EA0)","linear-gradient(135deg,#4A0E4E,#8E3A8E)","linear-gradient(135deg,#1C3D5A,#4682B4)","linear-gradient(135deg,#556B2F,#8FBC8F)"];
 
 function HolidaysSection(){
-  const[deals,setDeals]=useState(null);
-  const[loading,setLoading]=useState(true);
-  const[error,setError]=useState(null);
   const ref=useRef(null);
-
-  // Auto-fetch on mount
-  useEffect(()=>{
-    let x=false;
-    (async()=>{
-      try{
-        const r=await fetch("https://api.anthropic.com/v1/messages",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            model:"claude-sonnet-4-20250514",
-            max_tokens:2000,
-            tools:[{type:"web_search_20250305",name:"web_search"}],
-            messages:[{role:"user",content:`Go to enjoyescapes.com and find ALL current holiday deals displayed on their homepage. For each deal extract:
-- title: the exact deal headline
-- destination: country/region
-- price: exact price shown (e.g. "from £184pp")
-- nights: duration (e.g. "7 nights", "4 nights")
-- type: board type (e.g. "All Inclusive", "Self-Catering", "Hotel + Flight")
-- deposit: deposit amount if shown
-- url: the booking link URL
-- badge: any badge like "Featured", "New Deal", "Hot Deal"
-- imageUrl: the image URL if visible
-
-Return ONLY a JSON array with ALL deals found. Example format:
-[{"title":"5* All inclusive Turkey","destination":"Turkey","price":"from £184pp","nights":"4 nights","type":"All Inclusive","deposit":"£19 deposit","url":"https://...","badge":"Featured","imageUrl":"https://..."}]
-
-Return valid JSON only. No markdown fences. No explanatory text before or after the JSON.`}]
-          })
-        });
-        if(x) return;
-        const data=await r.json();
-
-        // Robust parsing — try multiple extraction strategies
-        let parsed=null;
-
-        // Strategy 1: Find text blocks and try to parse JSON
-        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
-        for(const txt of textBlocks){
-          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
-          // Try to find JSON array in the text
-          const arrMatch=clean.match(/\[[\s\S]*\]/);
-          if(arrMatch){
-            try{
-              const arr=JSON.parse(arrMatch[0]);
-              if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}
-            }catch(e){/* try next */}
-          }
-          // Try direct parse
-          try{
-            const arr=JSON.parse(clean);
-            if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}
-          }catch(e){/* try next */}
-        }
-
-        // Strategy 2: If no text blocks had JSON, try tool result blocks
-        if(!parsed){
-          const toolResults=(data.content||[]).filter(b=>b.type==="mcp_tool_result"||b.type==="tool_result");
-          for(const tr of toolResults){
-            const txt=tr.content?.[0]?.text||"";
-            const arrMatch=txt.match(/\[[\s\S]*\]/);
-            if(arrMatch){
-              try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}
-            }
-          }
-        }
-
-        // Strategy 3: Concatenate all text and try one big parse
-        if(!parsed){
-          const allText=(data.content||[]).map(b=>b.text||"").join("\n");
-          const arrMatch=allText.match(/\[[\s\S]*?\](?=\s*$|\s*\n)/);
-          if(arrMatch){
-            try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr))parsed=arr;}catch(e){}
-          }
-        }
-
-        if(!x){
-          if(parsed&&parsed.length>0){
-            // Normalize each deal
-            const normalized=parsed.map((d,i)=>({
-              id:"hd"+i,
-              title:d.title||d.name||"Holiday Deal",
-              destination:d.destination||d.country||"",
-              price:d.price||d.cost||"See website",
-              nights:d.nights||d.duration||"",
-              type:d.type||d.boardType||d.board||"",
-              deposit:d.deposit||"",
-              url:d.url||d.link||d.bookingUrl||"https://www.enjoyescapes.com/",
-              badge:d.badge||d.tag||"",
-              imageUrl:d.imageUrl||d.image||d.img||null,
-            }));
-            setDeals(normalized);
-          } else {
-            setError("No deals found — visit EnjoyEscapes directly");
-            setDeals([]);
-          }
-        }
-      }catch(e){
-        if(!x) setError("Couldn't load deals — check your connection");
-      }
-      if(!x) setLoading(false);
-    })();
-    return()=>{x=true;};
-  },[]);
-
-  const refresh=useCallback(()=>{
-    setDeals(null);setLoading(true);setError(null);
-    // Re-trigger by remounting (quick hack: set deals to null triggers the skeleton)
-    // Actually just re-run the fetch
-    (async()=>{
-      try{
-        const r=await fetch("https://api.anthropic.com/v1/messages",{
-          method:"POST",headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,tools:[{type:"web_search_20250305",name:"web_search"}],
-            messages:[{role:"user",content:'Search enjoyescapes.com for ALL current holiday deals on their homepage right now. Extract every deal with: title, destination, price, nights, type, deposit, url, badge, imageUrl. Return ONLY a valid JSON array. No markdown. No text before or after.'}]})
-        });
-        const data=await r.json();
-        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
-        let parsed=null;
-        for(const txt of textBlocks){
-          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
-          const arrMatch=clean.match(/\[[\s\S]*\]/);
-          if(arrMatch){try{const arr=JSON.parse(arrMatch[0]);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}}
-          try{const arr=JSON.parse(clean);if(Array.isArray(arr)&&arr.length>0){parsed=arr;break;}}catch(e){}
-        }
-        if(parsed){setDeals(parsed.map((d,i)=>({id:"hd"+i,title:d.title||"Deal",destination:d.destination||"",price:d.price||"See site",nights:d.nights||"",type:d.type||"",deposit:d.deposit||"",url:d.url||"https://www.enjoyescapes.com/",badge:d.badge||"",imageUrl:d.imageUrl||null})));}
-        else{setError("Couldn't parse deals");setDeals([]);}
-      }catch(e){setError("Search failed");}
-      setLoading(false);
-    })();
-  },[]);
-
-  // Skeleton loading cards
-  const Skeleton=()=>(
-    <div className="scroll-row">
-      {[0,1,2,3,4].map(i=>(
-        <div key={i} className="holiday-card" style={{flex:"0 0 280px",minHeight:200}}>
-          <div style={{height:120,borderRadius:12,background:"linear-gradient(90deg,#f0ede8 25%,#e6e2da 50%,#f0ede8 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s infinite",marginBottom:12}}/>
-          <div style={{height:14,width:"80%",borderRadius:4,background:"#f0ede8",marginBottom:8}}/>
-          <div style={{height:12,width:"50%",borderRadius:4,background:"#f0ede8",marginBottom:8}}/>
-          <div style={{height:20,width:"40%",borderRadius:4,background:"#f0ede8"}}/>
-        </div>
-      ))}
-    </div>
-  );
+  // Real deals scraped from enjoyescapes.com with actual booking links & images
+  const deals=[
+    {id:"h1",title:"5* All Inclusive Turkey",dest:"Turkey",price:"\u00a3184",unit:"pp",nights:"4 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"Featured",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1770469262910-IMG_5046.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h2",title:"Swim-Up Pool Room Hotel",dest:"Turkey",price:"\u00a3839",unit:"pp",nights:"7 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"New Deal",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773919011453-IMG_9523.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h3",title:"Lloret de Mar, Spain",dest:"Spain",price:"\u00a3159",unit:"pp",nights:"3 nights",type:"Self-Catering",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773827536017-IMG_9451.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h4",title:"Cheap & Cheerful Agadir, Morocco",dest:"Morocco",price:"\u00a399",unit:"pp",nights:"4 nights",type:"Self-Catering",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773827103628-IMG_9442.webp",url:"https://www.enjoyescapes.com/"},
+    {id:"h5",title:"5* Winter All Inclusive Egypt",dest:"Egypt",price:"\u00a3299",unit:"pp",nights:"7 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773738745383-Screenshot_2026-03-17_at_17.09.51.png",url:"https://www.enjoyescapes.com/"},
+    {id:"h6",title:"14 Nights Summer Turkey",dest:"Turkey",price:"\u00a3389",unit:"pp",nights:"14 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773738494487-Screenshot_2026-03-17_at_17.07.50.png",url:"https://www.enjoyescapes.com/"},
+    {id:"h7",title:"August School Hols Turkey",dest:"Turkey",price:"\u00a3568",unit:"pp",nights:"7 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"School Hols",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773643124012-IMG_9139.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h8",title:"1 Week Lanzarote Break",dest:"Lanzarote",price:"\u00a3169",unit:"pp",nights:"7 nights",type:"Self-Catering",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773641854825-IMG_9130.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h9",title:"May School Hols Turkey",dest:"Turkey",price:"\u00a3199",unit:"pp",nights:"7 nights",type:"Self-Catering",deposit:"\u00a318pp deposit",badge:"School Hols",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773641480972-IMG_9119.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h10",title:"5* Kos, Greece \u2014 Mitsis Selection",dest:"Greece",price:"\u00a3369",unit:"pp",nights:"4 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"Hot Deal",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773474008949-Screenshot_2026-03-14_at_15.38.12.png",url:"https://www.enjoyescapes.com/"},
+    {id:"h11",title:"4* All Inclusive Beach Solo",dest:"Tunisia",price:"\u00a3349",unit:"pp",nights:"7 nights",type:"All Inclusive",deposit:"\u00a319pp deposit",badge:"Solo",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773386569682-IMG_8953.jpeg",url:"https://www.enjoyescapes.com/"},
+    {id:"h12",title:"4* Portugal",dest:"Portugal",price:"\u00a3139",unit:"pp",nights:"4 nights",type:"Self-Catering",deposit:"\u00a319pp deposit",badge:"",img:"https://vieoujqdwuxpaalkvomx.supabase.co/storage/v1/object/public/enjoy-escapes-assets/escapes/1773385479000-IMG_8936.jpeg",url:"https://www.enjoyescapes.com/"},
+  ];
 
   return(
     <div style={{animation:"fu .4s ease"}}>
-      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
-
-      <section style={{marginBottom:32}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-          <h2 className="sec-h">✈️ Live Holiday Deals</h2>
-          <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            {!loading&&<button onClick={refresh} style={{fontSize:11,color:"var(--accent)",background:"none",border:"1px solid var(--accent)",borderRadius:8,padding:"5px 12px",cursor:"pointer",fontFamily:"var(--bf)",fontWeight:600,transition:"all .15s"}}>↻ Refresh</button>}
-            <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>ref.current?.scrollBy({left:x*300,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
-          </div>
+      <section style={{marginBottom:36}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+          <h2 className="sec-h">{"\u2708\uFE0F"} Holiday Deals</h2>
+          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>ref.current?.scrollBy({left:x*300,behavior:"smooth"})} className="arr-btn">{x<0?"\u2190":"\u2192"}</button>)}</div>
         </div>
-        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>
-          Pulled live from <a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{color:"var(--accent)",fontWeight:600,textDecoration:"none"}}>EnjoyEscapes.com</a> · Book with as low as £0 deposit · Prices per person
+        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:18,lineHeight:1.5}}>
+          Curated from <a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{color:"var(--accent)",fontWeight:600,textDecoration:"none"}}>EnjoyEscapes.com</a> {"\u00b7"} Book with as low as {"\u00a3"}0 deposit {"\u00b7"} Hotel + Flight {"\u00b7"} Prices per person
         </p>
-
-        {loading && <Skeleton/>}
-        {error && <div style={{textAlign:"center",padding:"24px",background:"var(--sf)",borderRadius:14,border:"1px solid var(--bdr)"}}><p style={{fontSize:13,color:"var(--t2)"}}>{error}</p><a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{fontSize:12,color:"var(--accent)",fontWeight:600,textDecoration:"none",display:"inline-block",marginTop:8}}>Browse EnjoyEscapes directly →</a></div>}
-
-        {deals&&deals.length>0&&(
-          <div ref={ref} className="scroll-row">
-            {deals.map((d,i)=>(
-              <a key={d.id} href={d.url} target="_blank" rel="noopener noreferrer" className="holiday-card" style={{flex:"0 0 280px",overflow:"hidden",padding:0}}>
-                {/* Image or gradient header */}
-                <div style={{height:140,background:d.imageUrl?`url(${d.imageUrl}) center/cover no-repeat`:DEAL_GRADS[i%DEAL_GRADS.length],position:"relative",display:"flex",alignItems:"flex-end",padding:14}}>
-                  {d.imageUrl&&<div style={{position:"absolute",inset:0,background:"linear-gradient(transparent 40%,rgba(0,0,0,.6))"}}/>}
-                  {!d.imageUrl&&<div style={{position:"absolute",top:12,right:14,fontSize:32}}>{getFlag(d.title+d.destination)}</div>}
-                  <div style={{position:"relative",zIndex:1,display:"flex",gap:5,flexWrap:"wrap"}}>
-                    {d.badge&&<span style={{fontSize:9.5,background:"rgba(255,255,255,.9)",color:"#0D4F46",padding:"3px 8px",borderRadius:5,fontWeight:700}}>{d.badge}</span>}
-                    {d.type&&<span style={{fontSize:9.5,background:"rgba(255,255,255,.2)",color:"#fff",padding:"3px 8px",borderRadius:5,fontWeight:600,backdropFilter:"blur(4px)"}}>{d.type}</span>}
-                  </div>
+        <div ref={ref} className="scroll-row" style={{gap:16,paddingBottom:12}}>
+          {deals.map((d,i)=>(
+            <a key={d.id} href={d.url} target="_blank" rel="noopener noreferrer" style={{flex:"0 0 270px",scrollSnapAlign:"start",borderRadius:18,overflow:"hidden",textDecoration:"none",color:"var(--t1)",background:"#fff",border:"1px solid var(--bdr)",transition:"all .3s",boxShadow:"0 2px 8px rgba(0,0,0,.04)",display:"block"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow="0 12px 32px rgba(0,0,0,.1)";}} onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 2px 8px rgba(0,0,0,.04)";}}>
+              {/* Image */}
+              <div style={{height:170,position:"relative",overflow:"hidden"}}>
+                <img src={d.img} alt={d.title} loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(transparent 50%,rgba(0,0,0,.55))"}}/>
+                {/* Badges */}
+                <div style={{position:"absolute",top:12,left:12,display:"flex",gap:6}}>
+                  {d.badge&&<span style={{fontSize:10,background:"#fff",color:"#0D4F46",padding:"4px 10px",borderRadius:6,fontWeight:700,boxShadow:"0 2px 8px rgba(0,0,0,.15)"}}>{d.badge}</span>}
+                  <span style={{fontSize:10,background:"rgba(0,0,0,.45)",color:"#fff",padding:"4px 10px",borderRadius:6,fontWeight:600,backdropFilter:"blur(8px)"}}>{d.type}</span>
                 </div>
-                {/* Content */}
-                <div style={{padding:"14px 16px 16px"}}>
-                  <h3 style={{fontFamily:"var(--hf)",fontSize:16,fontWeight:600,lineHeight:1.3,marginBottom:8,color:"var(--t1)"}}>{d.title}</h3>
-                  <div style={{display:"flex",gap:5,marginBottom:10,flexWrap:"wrap"}}>
-                    {d.nights&&<span className="chip" style={{background:"rgba(196,138,45,.1)",color:"var(--gold)"}}>{d.nights}</span>}
-                    {d.destination&&<span className="chip">{d.destination}</span>}
-                  </div>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
-                    <span style={{fontSize:19,fontWeight:700,color:"var(--accent)",letterSpacing:-.3}}>{d.price}</span>
-                    {d.deposit&&<span style={{fontSize:10,color:"var(--t3)",fontWeight:500}}>{d.deposit}</span>}
-                  </div>
+                {/* Price overlay */}
+                <div style={{position:"absolute",bottom:12,right:12,background:"rgba(255,255,255,.95)",borderRadius:10,padding:"6px 12px",boxShadow:"0 2px 12px rgba(0,0,0,.15)"}}>
+                  <span style={{fontSize:10,color:"var(--t3)",fontWeight:500,display:"block",lineHeight:1}}>from</span>
+                  <span style={{fontSize:22,fontWeight:800,color:"var(--accent)",letterSpacing:-.5,lineHeight:1.1}}>{d.price}</span>
+                  <span style={{fontSize:10,color:"var(--t3)",fontWeight:500}}>{d.unit}</span>
                 </div>
-              </a>
-            ))}
-          </div>
-        )}
+              </div>
+              {/* Content */}
+              <div style={{padding:"14px 16px 16px"}}>
+                <h3 style={{fontFamily:"var(--hf)",fontSize:17,fontWeight:600,lineHeight:1.3,marginBottom:8}}>{d.title}</h3>
+                <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap",alignItems:"center"}}>
+                  <span style={{fontSize:16}}>{getFlag(d.title+" "+d.dest)}</span>
+                  <span style={{fontSize:11,color:"var(--t2)",fontWeight:500}}>{d.dest}</span>
+                  <span style={{fontSize:10,color:"var(--t3)"}}>{"\u00b7"}</span>
+                  <span style={{fontSize:11,color:"var(--gold)",fontWeight:600}}>{d.nights}</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:10,borderTop:"1px solid var(--bdr)"}}>
+                  <span style={{fontSize:10,color:"var(--t3)",fontWeight:500}}>{d.deposit}</span>
+                  <span style={{fontSize:11,color:"var(--accent)",fontWeight:700}}>View Deal {"\u2192"}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div style={{textAlign:"center",marginTop:12}}>
+          <a href="https://www.enjoyescapes.com/" target="_blank" rel="noopener noreferrer" style={{display:"inline-block",fontSize:13,color:"#fff",background:"var(--accent)",padding:"10px 28px",borderRadius:10,textDecoration:"none",fontWeight:600,fontFamily:"var(--bf)",transition:"all .2s",boxShadow:"0 2px 12px rgba(26,122,109,.25)"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-1px)"} onMouseLeave={e=>e.currentTarget.style.transform="none"}>Browse All Deals on EnjoyEscapes {"\u2192"}</a>
+        </div>
       </section>
 
       {/* Halal travel sources */}
       <section>
-        <h2 className="sec-h" style={{marginBottom:14}}>🕌 Halal Travel Sources</h2>
-        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>Muslim-friendly booking platforms — halal food, prayer facilities, ladies-only pools, alcohol-free.</p>
+        <h2 className="sec-h" style={{marginBottom:14}}>{"\uD83D\uDD4C"} Halal Travel Sources</h2>
+        <p style={{fontSize:12.5,color:"var(--t3)",marginBottom:16,lineHeight:1.5}}>Muslim-friendly booking platforms {"\u2014"} halal food, prayer facilities, ladies-only pools, alcohol-free.</p>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:10}}>{HALAL_TRAVEL.map((s,i)=>(<a key={i} href={s.u} target="_blank" rel="noopener noreferrer" className="src-card"><div style={{display:"flex",gap:10,alignItems:"center"}}><span style={{fontSize:20,flexShrink:0}}>{s.icon}</span><div><div style={{fontSize:13,fontWeight:600,color:"var(--t1)",marginBottom:2}}>{s.n}</div><div style={{fontSize:11,color:"var(--t3)",lineHeight:1.4}}>{s.d}</div></div></div></a>))}</div>
       </section>
     </div>
