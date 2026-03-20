@@ -100,21 +100,21 @@ const EV = [
 
 // ── STREAMING / CINEMA ──
 const SHOWS = [
-  {id:"s1",t:"The Night Agent S3",p:"Netflix",g:"Crime Thriller",d:"Globe-trotting espionage across Istanbul, Mexico City, D.C. Dark money, paid assassins, relentless journalist. Best season yet.",y:"19 Feb 2026",c:"#E50914",img:IMG.nightagent,cast:"Gabriel Basso",creator:"Shawn Ryan",eps:"10 episodes",rt:"82%",imdb:"7.5",mc:null,aud:"59%"},
-  {id:"s2",t:"Cross S2",p:"Prime Video",g:"Crime Drama",d:"Aldis Hodge returns as Alex Cross tracking a ruthless female vigilante targeting corrupt billionaires. Renewed for S3.",y:"11 Feb 2026",c:"#00A8E1",img:IMG.cross,cast:"Aldis Hodge, Matthew Lillard",creator:"Ben Watkins",eps:"8 episodes",rt:"93%",imdb:"7.2",mc:"62",aud:"64%"},
-  {id:"s3",t:"Dark Winds S3",p:"AMC+",g:"Crime Drama",d:"1970s Navajo Nation tribal police. Atmospheric, character-driven adaptation of Tony Hillerman's novels.",y:"2026",c:"#FF6B35",img:IMG.darkwinds,cast:"Zahn McClarnon",creator:"Graham Roland",eps:"6 episodes",rt:"97%",imdb:"7.8",mc:"79",aud:"82%"},
-  {id:"s4",t:"The Last Thing He Told Me S2",p:"Apple TV+",g:"Mystery Thriller",d:"Jennifer Garner continues the search for her missing husband. Deeper conspiracies emerge.",y:"2026",c:"#555",img:IMG.lasthing,cast:"Jennifer Garner",creator:"Josh Singer",eps:"7 episodes",rt:"68%",imdb:"6.7",mc:"56",aud:"75%"},
-  {id:"s5",t:"Seven Dials Mystery",p:"Netflix",g:"Murder Mystery",d:"Agatha Christie. Helena Bonham Carter + Martin Freeman. Witty, twisty country house whodunit.",y:"Jan 2026",c:"#E50914",img:IMG.sevendials,cast:"Helena Bonham Carter, Martin Freeman",creator:"Chris Chibnall",eps:"3 episodes",rt:null,imdb:null,mc:null,aud:null},
-  {id:"s6",t:"The Lincoln Lawyer S3",p:"Netflix",g:"Legal Crime",d:"Mickey Haller defends clients from his Lincoln Town Car. Based on Michael Connelly bestsellers.",y:"Streaming",c:"#E50914",img:IMG.lincolnlaw,cast:"Manuel Garcia-Rulfo",creator:"David E. Kelley",eps:"10 episodes",rt:"88%",imdb:"7.7",mc:"68",aud:"82%"},
-  {id:"s7",t:"Saltburn",p:"Prime Video",g:"Psych. Thriller",d:"Barry Keoghan infiltrates an aristocratic world. Dark, twisted, visually stunning. Emerald Fennell directs.",y:"Streaming",c:"#00A8E1",img:IMG.saltburn,cast:"Barry Keoghan, Jacob Elordi, Rosamund Pike",creator:"Emerald Fennell",eps:"Film \u2022 2h 7m",rt:"71%",imdb:"7.0",mc:"61",aud:"56%"},
-  {id:"s8",t:"Paradise S1",p:"Hulu / Disney+",g:"Political Thriller",d:"Sterling K. Brown as a Secret Service agent in a billionaire's utopian community. Murder, power, conspiracies.",y:"Jan 2026",c:"#1CE783",img:IMG.paradise,cast:"Sterling K. Brown, James Marsden",creator:"Dan Fogelman",eps:"8 episodes",rt:"73%",imdb:"7.4",mc:"67",aud:"80%"},
-  {id:"s9",t:"Trap",p:"Streaming",g:"Thriller",d:"Josh Hartnett as a serial-killer dad at a pop concert. The whole event is a police sting. M. Night Shyamalan.",y:"Streaming",c:"#8B6BA8",img:IMG.trap,cast:"Josh Hartnett, Saleka Shyamalan",creator:"M. Night Shyamalan",eps:"Film \u2022 1h 45m",rt:"48%",imdb:"5.8",mc:"47",aud:"44%"},
+  {id:"s1",t:"The Night Agent S3",p:"Netflix",g:"Crime Thriller",d:"Globe-trotting espionage across Istanbul, Mexico City, D.C. Dark money, paid assassins, relentless journalist. Best season yet.",y:"19 Feb 2026",c:"#E50914",img:IMG.nightagent,cast:"Gabriel Basso",creator:"Shawn Ryan",eps:"10 episodes",rt:"82%",imdb:"7.5",mc:null,aud:"59%",similar:["Reacher","Jack Ryan","Bodyguard","Condor","The Old Man"]},
+  {id:"s2",t:"Cross S2",p:"Prime Video",g:"Crime Drama",d:"Aldis Hodge returns as Alex Cross tracking a ruthless female vigilante targeting corrupt billionaires. Renewed for S3.",y:"11 Feb 2026",c:"#00A8E1",img:IMG.cross,cast:"Aldis Hodge, Matthew Lillard",creator:"Ben Watkins",eps:"8 episodes",rt:"93%",imdb:"7.2",mc:"62",aud:"64%",similar:["Reacher","Bosch","Luther","Mindhunter","True Detective"]},
+  {id:"s3",t:"Dark Winds S3",p:"AMC+",g:"Crime Drama",d:"1970s Navajo Nation tribal police. Atmospheric, character-driven adaptation of Tony Hillerman's novels.",y:"2026",c:"#FF6B35",img:IMG.darkwinds,cast:"Zahn McClarnon",creator:"Graham Roland",eps:"6 episodes",rt:"97%",imdb:"7.8",mc:"79",aud:"82%",similar:["Longmire","Yellowstone","Fargo","Wind River","Mare of Easttown"]},
+  {id:"s4",t:"The Last Thing He Told Me S2",p:"Apple TV+",g:"Mystery Thriller",d:"Jennifer Garner continues the search for her missing husband. Deeper conspiracies emerge.",y:"2026",c:"#555",img:IMG.lasthing,cast:"Jennifer Garner",creator:"Josh Singer",eps:"7 episodes",rt:"68%",imdb:"6.7",mc:"56",aud:"75%",similar:["Big Little Lies","The Undoing","Defending Jacob","Tell Me Lies","Nine Perfect Strangers"]},
+  {id:"s5",t:"Seven Dials Mystery",p:"Netflix",g:"Murder Mystery",d:"Agatha Christie. Helena Bonham Carter + Martin Freeman. Witty, twisty country house whodunit.",y:"Jan 2026",c:"#E50914",img:IMG.sevendials,cast:"Helena Bonham Carter, Martin Freeman",creator:"Chris Chibnall",eps:"3 episodes",rt:null,imdb:null,mc:null,aud:null,similar:["Knives Out","Glass Onion","Death on the Nile","The Pale Horse","Why Didn't They Ask Evans"]},
+  {id:"s6",t:"The Lincoln Lawyer S3",p:"Netflix",g:"Legal Crime",d:"Mickey Haller defends clients from his Lincoln Town Car. Based on Michael Connelly bestsellers.",y:"Streaming",c:"#E50914",img:IMG.lincolnlaw,cast:"Manuel Garcia-Rulfo",creator:"David E. Kelley",eps:"10 episodes",rt:"88%",imdb:"7.7",mc:"68",aud:"82%",similar:["Suits","Better Call Saul","Bosch","The Good Wife","Goliath"]},
+  {id:"s7",t:"Saltburn",p:"Prime Video",g:"Psych. Thriller",d:"Barry Keoghan infiltrates an aristocratic world. Dark, twisted, visually stunning. Emerald Fennell directs.",y:"Streaming",c:"#00A8E1",img:IMG.saltburn,cast:"Barry Keoghan, Jacob Elordi, Rosamund Pike",creator:"Emerald Fennell",eps:"Film \u2022 2h 7m",rt:"71%",imdb:"7.0",mc:"61",aud:"56%",similar:["The Talented Mr Ripley","Parasite","Get Out","Promising Young Woman","Gone Girl"]},
+  {id:"s8",t:"Paradise S1",p:"Hulu / Disney+",g:"Political Thriller",d:"Sterling K. Brown as a Secret Service agent in a billionaire's utopian community. Murder, power, conspiracies.",y:"Jan 2026",c:"#1CE783",img:IMG.paradise,cast:"Sterling K. Brown, James Marsden",creator:"Dan Fogelman",eps:"8 episodes",rt:"73%",imdb:"7.4",mc:"67",aud:"80%",similar:["Severance","Westworld","The White Lotus","Nine Perfect Strangers","Wayward Pines"]},
+  {id:"s9",t:"Trap",p:"Streaming",g:"Thriller",d:"Josh Hartnett as a serial-killer dad at a pop concert. The whole event is a police sting. M. Night Shyamalan.",y:"Streaming",c:"#8B6BA8",img:IMG.trap,cast:"Josh Hartnett, Saleka Shyamalan",creator:"M. Night Shyamalan",eps:"Film \u2022 1h 45m",rt:"48%",imdb:"5.8",mc:"47",aud:"44%",similar:["Old","Split","Glass","The Visit","Don't Breathe"]},
 ];
 const CINEMA = [
-  {id:"c1",t:"Scream 7",r:"27 Feb 2026",g:"Horror / Slasher",d:"Neve Campbell returns as Sidney Prescott. A new Ghostface targets her daughter. Kevin Williamson directs & writes.",img:IMG.scream7,cast:"Neve Campbell, Courteney Cox, Mason Gooding, Isabel May, Matthew Lillard",rt:"31%",imdb:"5.8",mc:null,aud:"76%",box:"\u00a363.6M opening"},
-  {id:"c2",t:"Peaky Blinders: The Immortal Man",r:"6 Mar 2026",g:"Crime Drama",d:"Birmingham, 1940. Tommy Shelby returns from exile during WWII for his most destructive reckoning yet. The theatrical conclusion.",img:IMG.peaky,cast:"Cillian Murphy, Barry Keoghan, Tom Hardy, Rebecca Ferguson",rt:"89%",imdb:"7.8",mc:null,aud:"77%",box:"In cinemas now"},
-  {id:"c3",t:"Project Hail Mary",r:"20 Mar 2026",g:"Sci-Fi",d:"Ryan Gosling wakes alone in space, humanity's last hope. From the author of The Martian. Phil Lord & Chris Miller direct.",img:IMG.hailmary,cast:"Ryan Gosling",rt:"92%",imdb:null,mc:null,aud:"89%",box:"Opening this week"},
-  {id:"c4",t:"Ready or Not 2",r:"20 Mar 2026",g:"Horror Comedy",d:"Samara Weaving returns for more deadly Le Domas survival games. Bigger, bloodier, funnier.",img:IMG.readyornot,cast:"Samara Weaving",rt:null,imdb:null,mc:null,aud:null,box:"Opening this week"},
+  {id:"c1",t:"Scream 7",r:"27 Feb 2026",g:"Horror / Slasher",d:"Neve Campbell returns as Sidney Prescott. A new Ghostface targets her daughter. Kevin Williamson directs & writes.",img:IMG.scream7,cast:"Neve Campbell, Courteney Cox, Mason Gooding, Isabel May, Matthew Lillard",rt:"31%",imdb:"5.8",mc:null,aud:"76%",box:"\u00a363.6M opening",similar:["Scream VI","I Know What You Did Last Summer","Happy Death Day","The Final Destination","Halloween"]},
+  {id:"c2",t:"Peaky Blinders: The Immortal Man",r:"6 Mar 2026",g:"Crime Drama",d:"Birmingham, 1940. Tommy Shelby returns from exile during WWII for his most destructive reckoning yet. The theatrical conclusion.",img:IMG.peaky,cast:"Cillian Murphy, Barry Keoghan, Tom Hardy, Rebecca Ferguson",rt:"89%",imdb:"7.8",mc:null,aud:"77%",box:"In cinemas now",similar:["Gangs of London","Boardwalk Empire","The Gentlemen","RocknRolla","Legend"]},
+  {id:"c3",t:"Project Hail Mary",r:"20 Mar 2026",g:"Sci-Fi",d:"Ryan Gosling wakes alone in space, humanity's last hope. From the author of The Martian. Phil Lord & Chris Miller direct.",img:IMG.hailmary,cast:"Ryan Gosling",rt:"92%",imdb:null,mc:null,aud:"89%",box:"Opening this week",similar:["The Martian","Interstellar","Arrival","Gravity","Ad Astra"]},
+  {id:"c4",t:"Ready or Not 2",r:"20 Mar 2026",g:"Horror Comedy",d:"Samara Weaving returns for more deadly Le Domas survival games. Bigger, bloodier, funnier.",img:IMG.readyornot,cast:"Samara Weaving",rt:null,imdb:null,mc:null,aud:null,box:"Opening this week",similar:["Ready or Not","You're Next","The Hunt","Knives Out","Bodies Bodies Bodies"]},
 ];
 
 // ── COMMUNITY SOURCES ──
@@ -345,6 +345,12 @@ function MediaCard({item,dark}){
         {item.box&&<p style={{fontSize:9.5,color:"var(--gold)",fontWeight:600,marginBottom:5}}>{item.box}</p>}
         <p style={{fontSize:11,color:dark?"#AA9090":"#AAA",lineHeight:1.45,...(open?{}:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"})}}>{item.d}</p>
         {item.creator&&open&&<p style={{fontSize:9.5,color:"#666",marginTop:5,fontStyle:"italic"}}>Created by {item.creator}</p>}
+        {item.similar&&open&&<div style={{marginTop:8,paddingTop:8,borderTop:"1px solid rgba(255,255,255,.08)"}}>
+          <p style={{fontSize:9.5,color:dark?"#887070":"#777",fontWeight:600,marginBottom:5}}>If you liked this, try:</p>
+          <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{item.similar.map((s,i)=>(
+            <span key={i} style={{fontSize:9,background:"rgba(255,255,255,.06)",color:dark?"#C0A0A0":"#AAA",padding:"3px 8px",borderRadius:4,border:"1px solid rgba(255,255,255,.06)"}}>{s}</span>
+          ))}</div>
+        </div>}
         {item.link&&<a href={item.link} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:8,paddingTop:8,borderTop:"1px solid rgba(255,255,255,.06)",fontSize:10,color:"#F5C518",fontWeight:600,textDecoration:"none"}}>View on IMDb {"\u2192"}</a>}
       </div>
     </div>
@@ -353,23 +359,120 @@ function MediaCard({item,dark}){
 
 function WhatToWatchSection(){
   const sRef=useRef(null);const cRef=useRef(null);
+  const[liveShows,setLiveShows]=useState(null);
+  const[liveCinema,setLiveCinema]=useState(null);
+  const[fetching,setFetching]=useState(true);
+
+  // OMDB API — free key, 1000 req/day. Get yours at omdbapi.com/apikey.aspx
+  // The key below is a demo key — replace with your own for production
+  const OMDB_KEY="f0946dea";
+
+  // Map our titles to OMDB search terms + IMDB IDs where known
+  const OMDB_MAP={
+    "The Night Agent S3":{q:"The Night Agent",imdb:"tt13918776",season:3},
+    "Cross S2":{q:"Cross",imdb:"tt11794812",season:2},
+    "Dark Winds S3":{q:"Dark Winds",imdb:"tt11883178"},
+    "The Last Thing He Told Me S2":{q:"The Last Thing He Told Me",imdb:"tt13641078"},
+    "Seven Dials Mystery":{q:"Seven Dials Mystery",y:"2026"},
+    "The Lincoln Lawyer S3":{q:"The Lincoln Lawyer",imdb:"tt13067532"},
+    "Saltburn":{q:"Saltburn",imdb:"tt17351924"},
+    "Paradise S1":{q:"Paradise",y:"2025",imdb:"tt26261755"},
+    "Trap":{q:"Trap",imdb:"tt26753003"},
+    "Scream 7":{q:"Scream 7",y:"2026",imdb:"tt27047903"},
+    "Peaky Blinders: The Immortal Man":{q:"Peaky Blinders The Immortal Man",y:"2026"},
+    "Project Hail Mary":{q:"Project Hail Mary",y:"2026"},
+    "Ready or Not 2":{q:"Ready or Not 2",y:"2026"},
+  };
+
+  useEffect(()=>{
+    let x=false;
+    (async()=>{
+      const fetchOne=async(title)=>{
+        const m=OMDB_MAP[title];
+        if(!m)return null;
+        try{
+          // Try by IMDB ID first (most reliable)
+          const url=m.imdb
+            ?`https://www.omdbapi.com/?apikey=${OMDB_KEY}&i=${m.imdb}&plot=short`
+            :`https://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${encodeURIComponent(m.q)}${m.y?"&y="+m.y:""}&plot=short`;
+          const r=await fetch(url);
+          const d=await r.json();
+          if(d.Response==="True")return d;
+        }catch(e){}
+        // Fallback: search by title
+        try{
+          const r=await fetch(`https://www.omdbapi.com/?apikey=${OMDB_KEY}&t=${encodeURIComponent(m.q)}&plot=short`);
+          const d=await r.json();
+          if(d.Response==="True")return d;
+        }catch(e){}
+        return null;
+      };
+
+      // Fetch all titles in parallel
+      const allTitles=[...SHOWS.map(s=>s.t),...CINEMA.map(c=>c.t)];
+      const results=await Promise.allSettled(allTitles.map(t=>fetchOne(t)));
+      if(x)return;
+
+      // Build a lookup map
+      const omdb={};
+      allTitles.forEach((t,i)=>{
+        if(results[i].status==="fulfilled"&&results[i].value){
+          omdb[t]=results[i].value;
+        }
+      });
+
+      // Merge OMDB data into shows
+      const mergeShow=(s)=>{
+        const o=omdb[s.t];
+        if(!o)return s;
+        const getRating=(src)=>{const r=(o.Ratings||[]).find(x=>x.Source===src);return r?r.Value:null;};
+        return{
+          ...s,
+          img:(o.Poster&&o.Poster!=="N/A")?o.Poster:s.img,
+          imdb:o.imdbRating&&o.imdbRating!=="N/A"?o.imdbRating:s.imdb,
+          rt:getRating("Rotten Tomatoes")||s.rt,
+          mc:(()=>{const v=getRating("Metacritic");return v?v.replace("/100",""):s.mc;})(),
+          cast:o.Actors&&o.Actors!=="N/A"?o.Actors:s.cast,
+          d:o.Plot&&o.Plot!=="N/A"&&o.Plot.length>30?o.Plot:s.d,
+          creator:o.Director&&o.Director!=="N/A"&&!s.creator?o.Director:s.creator,
+          _live:true,
+        };
+      };
+
+      setLiveShows(SHOWS.map(mergeShow));
+      setLiveCinema(CINEMA.map(mergeShow));
+      setFetching(false);
+    })();
+    return()=>{x=true;};
+  },[]);
+
+  const shows=liveShows||SHOWS;
+  const cinema=liveCinema||CINEMA;
+
   return(
     <div style={{animation:"fu .4s ease"}}>
+      {fetching&&<div style={{textAlign:"center",padding:"10px 0 18px",fontSize:12,color:"var(--t3)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+        <span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",background:"var(--accent)",animation:"fu .6s ease infinite alternate"}}/>
+        Fetching live ratings & posters from OMDB...
+      </div>}
       <section style={{marginBottom:32}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
           <h2 className="sec-h">{"\uD83D\uDCFA"} Streaming Now</h2>
           <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>sRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"\u2190":"\u2192"}</button>)}</div>
         </div>
-        <div ref={sRef} className="scroll-row" style={{gap:14}}>{SHOWS.map(s=><MediaCard key={s.id} item={s} dark/>)}</div>
+        <div ref={sRef} className="scroll-row" style={{gap:14}}>{shows.map(s=><MediaCard key={s.id} item={s} dark/>)}</div>
       </section>
       <section style={{marginBottom:32}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
           <h2 className="sec-h">{"\uD83C\uDFAC"} In Cinemas</h2>
           <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>cRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"\u2190":"\u2192"}</button>)}</div>
         </div>
-        <div ref={cRef} className="scroll-row" style={{gap:14}}>{CINEMA.map(c=><MediaCard key={c.id} item={c}/>)}</div>
+        <div ref={cRef} className="scroll-row" style={{gap:14}}>{cinema.map(c=><MediaCard key={c.id} item={c}/>)}</div>
       </section>
-      <p style={{fontSize:10,color:"var(--t3)",textAlign:"center"}}>Ratings: IMDb {"\u00b7"} Rotten Tomatoes {"\u00b7"} Metacritic {"\u00b7"} Audience scores {"\u00b7"} As of March 2026</p>
+      <p style={{fontSize:10,color:"var(--t3)",textAlign:"center"}}>
+        {liveShows?`\u2705 Live data from OMDB \u00b7 IMDb \u00b7 Rotten Tomatoes \u00b7 Metacritic`:`Ratings \u00b7 IMDb \u00b7 RT \u00b7 Metacritic`}
+        {" \u00b7 "}Tap any card to expand
+      </p>
     </div>
   );
 }
