@@ -100,21 +100,21 @@ const EV = [
 
 // ── STREAMING / CINEMA ──
 const SHOWS = [
-  {id:"s1",t:"The Night Agent S3",p:"Netflix",g:"Crime Thriller",d:"Globe-trotting espionage across Istanbul, Mexico City, D.C. Dark money, paid assassins, relentless journalist.",y:"19 Feb 2026",c:"#E50914",img:IMG.nightagent},
-  {id:"s2",t:"Cross S2",p:"Prime Video",g:"Crime Drama",d:"Aldis Hodge returns as James Patterson's Alex Cross. Washington D.C. investigations get personal.",y:"20 Feb 2026",c:"#00A8E1",img:IMG.cross},
-  {id:"s3",t:"Dark Winds S4",p:"AMC+",g:"Crime Drama",d:"1970s Navajo Nation tribal police. Atmospheric, character-driven adaptation of Tony Hillerman's novels.",y:"Feb 2026",c:"#FF6B35",img:IMG.darkwinds},
-  {id:"s4",t:"The Last Thing He Told Me S2",p:"Apple TV+",g:"Mystery Thriller",d:"Jennifer Garner continues the search for her missing husband. The mystery deepens.",y:"Feb 2026",c:"#555",img:IMG.lasthing},
-  {id:"s5",t:"Seven Dials Mystery",p:"Netflix",g:"Murder Mystery",d:"Agatha Christie. Helena Bonham Carter + Martin Freeman. Witty country house whodunit.",y:"Jan 2026",c:"#E50914",img:IMG.sevendials},
-  {id:"s6",t:"The Lincoln Lawyer S3",p:"Netflix",g:"Legal Crime",d:"Mickey Haller defends from his Lincoln Town Car. Based on Michael Connelly bestsellers.",y:"Streaming",c:"#E50914",img:IMG.lincolnlaw},
-  {id:"s7",t:"Saltburn",p:"Prime Video",g:"Psych. Thriller",d:"Barry Keoghan infiltrates aristocratic world. Dark, twisted. Emerald Fennell directs.",y:"Streaming",c:"#00A8E1",img:IMG.saltburn},
-  {id:"s8",t:"Paradise S2",p:"Hulu",g:"Political Thriller",d:"Sterling K. Brown. Billionaire-community mystery. Secrets, murder, power games.",y:"Feb 2026",c:"#1CE783",img:IMG.paradise},
-  {id:"s9",t:"Trap",p:"Streaming",g:"Thriller",d:"Josh Hartnett as serial-killer dad at a pop concert sting. M. Night Shyamalan at his most unhinged.",y:"Streaming",c:"#8B6BA8",img:IMG.trap},
+  {id:"s1",t:"The Night Agent S3",p:"Netflix",g:"Crime Thriller",d:"Globe-trotting espionage across Istanbul, Mexico City, D.C. Dark money, paid assassins, relentless journalist. Best season yet.",y:"19 Feb 2026",c:"#E50914",img:IMG.nightagent,cast:"Gabriel Basso",creator:"Shawn Ryan",eps:"10 episodes",rt:"82%",imdb:"7.5",mc:null,aud:"59%"},
+  {id:"s2",t:"Cross S2",p:"Prime Video",g:"Crime Drama",d:"Aldis Hodge returns as Alex Cross tracking a ruthless female vigilante targeting corrupt billionaires. Renewed for S3.",y:"11 Feb 2026",c:"#00A8E1",img:IMG.cross,cast:"Aldis Hodge, Matthew Lillard",creator:"Ben Watkins",eps:"8 episodes",rt:"93%",imdb:"7.2",mc:"62",aud:"64%"},
+  {id:"s3",t:"Dark Winds S3",p:"AMC+",g:"Crime Drama",d:"1970s Navajo Nation tribal police. Atmospheric, character-driven adaptation of Tony Hillerman's novels.",y:"2026",c:"#FF6B35",img:IMG.darkwinds,cast:"Zahn McClarnon",creator:"Graham Roland",eps:"6 episodes",rt:"97%",imdb:"7.8",mc:"79",aud:"82%"},
+  {id:"s4",t:"The Last Thing He Told Me S2",p:"Apple TV+",g:"Mystery Thriller",d:"Jennifer Garner continues the search for her missing husband. Deeper conspiracies emerge.",y:"2026",c:"#555",img:IMG.lasthing,cast:"Jennifer Garner",creator:"Josh Singer",eps:"7 episodes",rt:"68%",imdb:"6.7",mc:"56",aud:"75%"},
+  {id:"s5",t:"Seven Dials Mystery",p:"Netflix",g:"Murder Mystery",d:"Agatha Christie. Helena Bonham Carter + Martin Freeman. Witty, twisty country house whodunit.",y:"Jan 2026",c:"#E50914",img:IMG.sevendials,cast:"Helena Bonham Carter, Martin Freeman",creator:"Chris Chibnall",eps:"3 episodes",rt:null,imdb:null,mc:null,aud:null},
+  {id:"s6",t:"The Lincoln Lawyer S3",p:"Netflix",g:"Legal Crime",d:"Mickey Haller defends clients from his Lincoln Town Car. Based on Michael Connelly bestsellers.",y:"Streaming",c:"#E50914",img:IMG.lincolnlaw,cast:"Manuel Garcia-Rulfo",creator:"David E. Kelley",eps:"10 episodes",rt:"88%",imdb:"7.7",mc:"68",aud:"82%"},
+  {id:"s7",t:"Saltburn",p:"Prime Video",g:"Psych. Thriller",d:"Barry Keoghan infiltrates an aristocratic world. Dark, twisted, visually stunning. Emerald Fennell directs.",y:"Streaming",c:"#00A8E1",img:IMG.saltburn,cast:"Barry Keoghan, Jacob Elordi, Rosamund Pike",creator:"Emerald Fennell",eps:"Film \u2022 2h 7m",rt:"71%",imdb:"7.0",mc:"61",aud:"56%"},
+  {id:"s8",t:"Paradise S1",p:"Hulu / Disney+",g:"Political Thriller",d:"Sterling K. Brown as a Secret Service agent in a billionaire's utopian community. Murder, power, conspiracies.",y:"Jan 2026",c:"#1CE783",img:IMG.paradise,cast:"Sterling K. Brown, James Marsden",creator:"Dan Fogelman",eps:"8 episodes",rt:"73%",imdb:"7.4",mc:"67",aud:"80%"},
+  {id:"s9",t:"Trap",p:"Streaming",g:"Thriller",d:"Josh Hartnett as a serial-killer dad at a pop concert. The whole event is a police sting. M. Night Shyamalan.",y:"Streaming",c:"#8B6BA8",img:IMG.trap,cast:"Josh Hartnett, Saleka Shyamalan",creator:"M. Night Shyamalan",eps:"Film \u2022 1h 45m",rt:"48%",imdb:"5.8",mc:"47",aud:"44%"},
 ];
 const CINEMA = [
-  {id:"c1",t:"Scream 7",r:"27 Feb",g:"Horror",d:"Neve Campbell returns to face Ghostface. Kevin Williamson directs.",img:IMG.scream7},
-  {id:"c2",t:"Peaky Blinders: The Immortal Man",r:"6 Mar",g:"Crime Drama",d:"Tommy Shelby in WWII. Cillian Murphy, Barry Keoghan, Tom Hardy.",img:IMG.peaky},
-  {id:"c3",t:"Project Hail Mary",r:"20 Mar",g:"Sci-Fi",d:"Ryan Gosling wakes alone in space, humanity's last hope. From the author of The Martian.",img:IMG.hailmary},
-  {id:"c4",t:"Ready or Not 2",r:"20 Mar",g:"Horror Comedy",d:"Samara Weaving returns for more deadly Le Domas survival games.",img:IMG.readyornot},
+  {id:"c1",t:"Scream 7",r:"27 Feb 2026",g:"Horror / Slasher",d:"Neve Campbell returns as Sidney Prescott. A new Ghostface targets her daughter. Kevin Williamson directs & writes.",img:IMG.scream7,cast:"Neve Campbell, Courteney Cox, Mason Gooding, Isabel May, Matthew Lillard",rt:"31%",imdb:"5.8",mc:null,aud:"76%",box:"\u00a363.6M opening"},
+  {id:"c2",t:"Peaky Blinders: The Immortal Man",r:"6 Mar 2026",g:"Crime Drama",d:"Birmingham, 1940. Tommy Shelby returns from exile during WWII for his most destructive reckoning yet. The theatrical conclusion.",img:IMG.peaky,cast:"Cillian Murphy, Barry Keoghan, Tom Hardy, Rebecca Ferguson",rt:"89%",imdb:"7.8",mc:null,aud:"77%",box:"In cinemas now"},
+  {id:"c3",t:"Project Hail Mary",r:"20 Mar 2026",g:"Sci-Fi",d:"Ryan Gosling wakes alone in space, humanity's last hope. From the author of The Martian. Phil Lord & Chris Miller direct.",img:IMG.hailmary,cast:"Ryan Gosling",rt:"92%",imdb:null,mc:null,aud:"89%",box:"Opening this week"},
+  {id:"c4",t:"Ready or Not 2",r:"20 Mar 2026",g:"Horror Comedy",d:"Samara Weaving returns for more deadly Le Domas survival games. Bigger, bloodier, funnier.",img:IMG.readyornot,cast:"Samara Weaving",rt:null,imdb:null,mc:null,aud:null,box:"Opening this week"},
 ];
 
 // ── COMMUNITY SOURCES ──
@@ -311,94 +311,65 @@ function EventCard({ev,i,onHalal}){
 
 // ── MEDIA CARD ──
 // ── MEDIA CARD WITH RATINGS ──
-function MediaCard({item,dark,ratings}){
+function MediaCard({item,dark}){
   const[open,setOpen]=useState(false);const[err,setErr]=useState(false);
   const bg=dark?"#1e1520":"#161616";
   const gk=Object.keys(IMG).find(k=>IMG[k]===item.img);
   const grad=gk?`linear-gradient(135deg,${GRAD[gk]})`:`linear-gradient(135deg,${bg},#333)`;
-  const r=ratings?.[item.t]||ratings?.[item.t.replace(/ S\d+$/,"")]||null;
   return(
-    <div onClick={()=>setOpen(!open)} style={{flex:`0 0 ${dark?175:205}px`,scrollSnapAlign:"start",background:bg,borderRadius:14,overflow:"hidden",border:`1px solid ${dark?"rgba(255,255,255,.08)":"rgba(255,255,255,.06)"}`,cursor:"pointer",transition:"transform .2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="none"}>
+    <div onClick={()=>setOpen(!open)} style={{flex:`0 0 ${dark?195:210}px`,scrollSnapAlign:"start",background:bg,borderRadius:14,overflow:"hidden",border:`1px solid ${dark?"rgba(255,255,255,.08)":"rgba(255,255,255,.06)"}`,cursor:"pointer",transition:"transform .25s,box-shadow .25s"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 24px rgba(0,0,0,.3)";}} onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
       {item.img&&!err
-        ?<img src={item.img} alt={item.t} crossOrigin="anonymous" referrerPolicy="no-referrer" onError={()=>setErr(true)} loading="lazy" style={{width:"100%",height:dark?215:255,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
-        :<div style={{width:"100%",height:dark?215:255,background:grad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:18,textAlign:"center",position:"relative",overflow:"hidden"}}>
+        ?<img src={item.img} alt={item.t} referrerPolicy="no-referrer" onError={()=>setErr(true)} loading="lazy" style={{width:"100%",height:dark?230:260,objectFit:"cover",objectPosition:"center top",display:"block"}}/>
+        :<div style={{width:"100%",height:dark?230:260,background:grad,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:18,textAlign:"center",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",inset:0,background:"radial-gradient(circle at 30% 40%,rgba(255,255,255,.08),transparent 60%)"}}/>
           {item.p&&<span style={{fontSize:9,color:item.c||"#888",fontWeight:700,textTransform:"uppercase",marginBottom:8,letterSpacing:1.5,position:"relative"}}>{item.p}</span>}
           <span style={{fontFamily:"var(--hf)",fontSize:dark?18:20,fontWeight:600,color:"#fff",lineHeight:1.2,position:"relative"}}>{item.t}</span>
         </div>}
-      <div style={{padding:14}}>
-        {item.p&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:9,color:item.c||"#888",fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>{item.p}</span>{item.y&&<span style={{fontSize:9,color:"#555"}}>{item.y}</span>}</div>}
-        {item.r&&<span style={{fontSize:10,color:dark?"#E8A87C":"#888",fontWeight:600,display:"block",marginBottom:4}}>{item.r} · {item.g}</span>}
-        <h3 style={{fontSize:dark?13.5:14.5,fontWeight:600,marginBottom:4,color:dark?"#F0E8E0":"#F0F0F0"}}>{item.t}</h3>
-        {r&&<div style={{display:"flex",gap:5,marginBottom:6,flexWrap:"wrap"}}>
-          {r.imdb&&<span style={{fontSize:9,background:"rgba(245,197,24,.15)",color:"#F5C518",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>⭐ {r.imdb}</span>}
-          {r.rt&&<span style={{fontSize:9,background:"rgba(250,50,50,.12)",color:"#FA3232",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>🍅 {r.rt}</span>}
-          {r.mc&&<span style={{fontSize:9,background:parseInt(r.mc)>=60?"rgba(102,204,0,.12)":"rgba(255,199,0,.12)",color:parseInt(r.mc)>=60?"#66CC00":"#FFC700",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>MC {r.mc}</span>}
+      <div style={{padding:"12px 14px 14px"}}>
+        {item.p&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+          <span style={{fontSize:9.5,color:item.c||"#888",fontWeight:700,textTransform:"uppercase",letterSpacing:.5}}>{item.p}</span>
+          {(item.y||item.r)&&<span style={{fontSize:9,color:"#555"}}>{item.y||item.r}</span>}
         </div>}
-        {!item.r&&item.g&&<span style={{display:"inline-block",fontSize:9,color:"#666",background:"rgba(255,255,255,.05)",padding:"2px 8px",borderRadius:3,marginBottom:5}}>{item.g}</span>}
-        <p style={{fontSize:11.5,color:dark?"#AA9090":"#AAA",lineHeight:1.45,...(open?{}:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"})}}>{item.d}</p>
+        <h3 style={{fontSize:14.5,fontWeight:600,marginBottom:5,color:dark?"#F0E8E0":"#F0F0F0",lineHeight:1.25}}>{item.t}</h3>
+        <div style={{display:"flex",gap:5,marginBottom:6,flexWrap:"wrap"}}>
+          <span style={{fontSize:9,color:"#777",background:"rgba(255,255,255,.06)",padding:"2px 7px",borderRadius:3}}>{item.g}</span>
+          {item.eps&&<span style={{fontSize:9,color:"#777",background:"rgba(255,255,255,.06)",padding:"2px 7px",borderRadius:3}}>{item.eps}</span>}
+        </div>
+        <div style={{display:"flex",gap:5,marginBottom:7,flexWrap:"wrap"}}>
+          {item.imdb&&<span style={{fontSize:9,background:"rgba(245,197,24,.15)",color:"#F5C518",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>IMDb {item.imdb}</span>}
+          {item.rt&&<span style={{fontSize:9,background:parseInt(item.rt)>=60?"rgba(250,50,50,.12)":"rgba(100,100,100,.15)",color:parseInt(item.rt)>=60?"#FA3232":"#999",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>{parseInt(item.rt)>=60?"\uD83C\uDF45":"\uD83E\uDD6C"} {item.rt}</span>}
+          {item.mc&&<span style={{fontSize:9,background:parseInt(item.mc)>=60?"rgba(102,204,0,.12)":"rgba(255,199,0,.12)",color:parseInt(item.mc)>=60?"#66CC00":"#FFC700",padding:"2px 7px",borderRadius:4,fontWeight:700,lineHeight:"14px"}}>MC {item.mc}</span>}
+          {item.aud&&<span style={{fontSize:9,background:"rgba(255,255,255,.08)",color:"#AAA",padding:"2px 7px",borderRadius:4,fontWeight:600,lineHeight:"14px"}}>{"\uD83C\uDF7F"} {item.aud}</span>}
+        </div>
+        {item.cast&&<p style={{fontSize:10,color:dark?"#887070":"#777",marginBottom:5,fontWeight:500}}>{item.cast}</p>}
+        {item.box&&<p style={{fontSize:9.5,color:"var(--gold)",fontWeight:600,marginBottom:5}}>{item.box}</p>}
+        <p style={{fontSize:11,color:dark?"#AA9090":"#AAA",lineHeight:1.45,...(open?{}:{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"})}}>{item.d}</p>
+        {item.creator&&open&&<p style={{fontSize:9.5,color:"#666",marginTop:5,fontStyle:"italic"}}>Created by {item.creator}</p>}
+        {item.link&&<a href={item.link} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:8,paddingTop:8,borderTop:"1px solid rgba(255,255,255,.06)",fontSize:10,color:"#F5C518",fontWeight:600,textDecoration:"none"}}>View on IMDb {"\u2192"}</a>}
       </div>
     </div>
   );
 }
 
-// ── WHAT TO WATCH (auto-fetches ratings on mount) ──
 function WhatToWatchSection(){
-  const[ratings,setRatings]=useState(null);
-  const[loading,setLoading]=useState(true);
   const sRef=useRef(null);const cRef=useRef(null);
-
-  useEffect(()=>{
-    let x=false;
-    (async()=>{
-      try{
-        const titles=[...SHOWS.map(s=>s.t),...CINEMA.map(c=>c.t)];
-        const r=await fetch("https://api.anthropic.com/v1/messages",{
-          method:"POST",headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            model:"claude-sonnet-4-20250514",max_tokens:2000,
-            tools:[{type:"web_search_20250305",name:"web_search"}],
-            messages:[{role:"user",content:"Look up ratings for these TV shows and movies from IMDb, Rotten Tomatoes and Metacritic. Search for each title.\n\nTitles:\n"+titles.join("\n")+'\n\nReturn ONLY a JSON object. Keys = exact title names. Values = {"imdb":"7.8/10","rt":"85%","mc":"72"}. Use null for scores not found.\n\nReturn valid JSON only. No markdown fences. No text before or after.'}]
-          })
-        });
-        if(x)return;
-        const data=await r.json();
-        const textBlocks=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text);
-        let parsed=null;
-        for(const txt of textBlocks){
-          const clean=txt.replace(/```json\s*/g,"").replace(/```\s*/g,"").trim();
-          const objMatch=clean.match(/\{[\s\S]*\}/);
-          if(objMatch){try{const obj=JSON.parse(objMatch[0]);if(typeof obj==="object"&&!Array.isArray(obj)){parsed=obj;break;}}catch(e){}}
-          try{const obj=JSON.parse(clean);if(typeof obj==="object"&&!Array.isArray(obj)){parsed=obj;break;}}catch(e){}
-        }
-        if(!x&&parsed)setRatings(parsed);
-      }catch(e){}
-      if(!x)setLoading(false);
-    })();
-    return()=>{x=true;};
-  },[]);
-
   return(
     <div style={{animation:"fu .4s ease"}}>
-      {loading&&<div style={{textAlign:"center",padding:"12px 0 20px",fontSize:12,color:"var(--t3)"}}>
-        <span style={{display:"inline-block",animation:"fu .5s ease infinite alternate",marginRight:6}}>⭐</span>
-        Fetching ratings from IMDb, Rotten Tomatoes & Metacritic...
-      </div>}
       <section style={{marginBottom:32}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-          <h2 className="sec-h">📺 Streaming Now</h2>
-          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>sRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
+          <h2 className="sec-h">{"\uD83D\uDCFA"} Streaming Now</h2>
+          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>sRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"\u2190":"\u2192"}</button>)}</div>
         </div>
-        <div ref={sRef} className="scroll-row">{SHOWS.map(s=><MediaCard key={s.id} item={s} dark ratings={ratings}/>)}</div>
+        <div ref={sRef} className="scroll-row" style={{gap:14}}>{SHOWS.map(s=><MediaCard key={s.id} item={s} dark/>)}</div>
       </section>
       <section style={{marginBottom:32}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-          <h2 className="sec-h">🎬 In Cinemas</h2>
-          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>cRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"←":"→"}</button>)}</div>
+          <h2 className="sec-h">{"\uD83C\uDFAC"} In Cinemas</h2>
+          <div style={{display:"flex",gap:6}}>{[-1,1].map(x=><button key={x} onClick={()=>cRef.current?.scrollBy({left:x*220,behavior:"smooth"})} className="arr-btn">{x<0?"\u2190":"\u2192"}</button>)}</div>
         </div>
-        <div ref={cRef} className="scroll-row">{CINEMA.map(c=><MediaCard key={c.id} item={c} ratings={ratings}/>)}</div>
+        <div ref={cRef} className="scroll-row" style={{gap:14}}>{CINEMA.map(c=><MediaCard key={c.id} item={c}/>)}</div>
       </section>
-      {ratings&&<p style={{fontSize:10,color:"var(--t3)",textAlign:"center",marginTop:-12}}>Ratings from IMDb · Rotten Tomatoes · Metacritic</p>}
+      <p style={{fontSize:10,color:"var(--t3)",textAlign:"center"}}>Ratings: IMDb {"\u00b7"} Rotten Tomatoes {"\u00b7"} Metacritic {"\u00b7"} Audience scores {"\u00b7"} As of March 2026</p>
     </div>
   );
 }
