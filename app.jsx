@@ -742,7 +742,7 @@ function App(){
           <span style={{fontSize:32}}>🌙</span>
           <h1>For My Kolchuma</h1>
         </div>
-        <p>Curated & verified halal events for Muslim families · East London priority · {new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}</p>
+        <p>Curated by Ridhwan · {new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}</p>
       </header>
 
       {/* ── TABS ── */}
